@@ -187,6 +187,55 @@ input[type="search"]::-webkit-search-decoration {
   color: #000;
   padding: 0.2em 0; }
 
+@font-face {
+  font-family: 'robotoblack';
+  src: url('../fonts/Roboto-Black-webfont.eot');
+  src: url('../fonts/Roboto-Black-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/Roboto-Black-webfont.woff') format('woff'), url('../fonts/Roboto-Black-webfont.ttf') format('truetype'), url('../fonts/Roboto-Black-webfont.svg#robotoblack') format('svg');
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'roboto';
+  src: url('../fonts/Roboto-Bold-webfont.eot');
+  src: url('../fonts/Roboto-Bold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/Roboto-Bold-webfont.woff') format('woff'), url('../fonts/Roboto-Bold-webfont.ttf') format('truetype'), url('../fonts/Roboto-Bold-webfont.svg#robotobold') format('svg');
+  font-weight: 700;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'roboto';
+  src: url('../fonts/Roboto-BoldItalic-webfont.eot');
+  src: url('../fonts/Roboto-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/Roboto-BoldItalic-webfont.woff') format('woff'), url('../fonts/Roboto-BoldItalic-webfont.ttf') format('truetype'), url('../fonts/Roboto-BoldItalic-webfont.svg#robotobold_italic') format('svg');
+  font-weight: 700;
+  font-style: oblique; }
+
+@font-face {
+  font-family: 'roboto';
+  src: url('../fonts/Roboto-Regular-webfont.eot');
+  src: url('../fonts/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/Roboto-Regular-webfont.woff') format('woff'), url('../fonts/Roboto-Regular-webfont.ttf') format('truetype'), url('../fonts/Roboto-Regular-webfont.svg#robotomedium') format('svg');
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'roboto';
+  src: url('../fonts/Roboto-MediumItalic-webfont.eot');
+  src: url('../fonts/Roboto-MediumItalic-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/Roboto-MediumItalic-webfont.woff') format('woff'), url('../fonts/Roboto-MediumItalic-webfont.ttf') format('truetype'), url('../fonts/Roboto-MediumItalic-webfont.svg#robotomedium_italic') format('svg');
+  font-weight: normal;
+  font-style: oblique; }
+
+@font-face {
+  font-family: 'roboto';
+  src: url('../fonts/Roboto-Thin-webfont.eot');
+  src: url('../fonts/Roboto-Thin-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/Roboto-Thin-webfont.woff') format('woff'), url('../fonts/Roboto-Thin-webfont.ttf') format('truetype'), url('../fonts/Roboto-Thin-webfont.svg#robotothin') format('svg');
+  font-weight: 300;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'roboto';
+  src: url('../fonts/Roboto-ThinItalic-webfont.eot');
+  src: url('../fonts/Roboto-ThinItalic-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/Roboto-ThinItalic-webfont.woff') format('woff'), url('../fonts/Roboto-ThinItalic-webfont.ttf') format('truetype'), url('../fonts/Roboto-ThinItalic-webfont.svg#robotothin_italic') format('svg');
+  font-weight: 300;
+  font-style: oblique; }
+
 .content {
   padding: 30px 0 0; }
 
@@ -760,15 +809,24 @@ input:focus, select:focus, textarea:focus {
 /* =Main content and comment content
 -------------------------------------------------------------- */
 header {
-  background: #cb1a72;
-  border-top: 15px solid #b51a6f;
+  background: #cb1a72 url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMzUuNDI0cHgiIGhlaWdodD0iMzUuNDk4cHgiIHZpZXdCb3g9IjAgMCAzNS40MjQgMzUuNDk4IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAzNS40MjQgMzUuNDk4IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIG9wYWNpdHk9IjAuMSIgZmlsbD0iIzJEMkUyRCIgZD0iTTM1LjQyNCwzMC43MzljLTEwLjcwOCwwLTIwLjY2MywwLTMwLjgzNCwwYzAtOC45OTMsMC0xNy41NDksMC0yNi4xNzENCgljNy40NjUsMCwxNC41NTcsMCwyMS41MjMsMGMwLDUuOTY3LDAsMTEuNDYxLDAsMTYuNzM2Yy00LjYzMywwLTguNzE0LDAtMTIuNzQ4LDBjMC0yLjkzOCwwLTUuMjk5LDAtOS43NzQNCgljMi4yNDgsMi4xMzgsMy4yNjgsMy4xODgsNC4zNzUsNC4xMzNjMC43OTIsMC42NzcsMS44MTIsMS43OTcsMi41MzMsMS42NjJjMC43OTgtMC4xNSwxLjgxLTEuNDMzLDEuOTUzLTIuMzQ0DQoJYzAuMjk5LTEuOTE2LDAuMDkxLTMuOTExLDAuMDkxLTYuMjIxYy00LjYxOSwwLTguNzE2LDAtMTIuOTYsMGMwLDUuOTk0LDAsMTEuNjU2LDAsMTcuMjg4YzcuNDM3LDAsMTQuMzcxLDAsMjEuMjcxLDANCgljMC04LjkyMSwwLTE3LjQ0NiwwLTI2LjA0OUMyMC4yMzYsMCwxMC4yNzIsMCwwLDBjMCwxMS44MzQsMCwyMy4zNTUsMCwzNS40OThjNy43NDYsMCwxNS4xMzgtMC4wMDIsMjIuNTMsMA0KCWM0LjI4NywwLjAwMSw4LjYwOCwwLjAwMiwxMi44OTUsMC4wMDNWMzAuNzM5eiIvPg0KPC9zdmc+DQo=');
+  border-top: 1px solid black;
+  border-bottom: 2px solid #b51a6f;
   margin-bottom: 55px;
   padding: 70px 0 80px; }
   header h1 {
     color: white;
-    text-align: center; }
+    text-align: center;
+    font: 500 40px/1 'roboto'; }
     header h1 strong {
-      display: block; }
+      display: block;
+      font: 500 111px/1 'robotoblack'; }
+
+p {
+  font: 500 15px 'roboto', Helvetica, Arial, sans-serif; }
+
+h2 {
+  font: 700 28px 'roboto'; }
 
 article {
   margin: 50px 0 0; }
@@ -780,7 +838,7 @@ article {
       background: #e6e6e6;
       padding: 5px 15px; }
       article nav li a:link:hover, article nav li a:visited:hover {
-        background: #999999;
+        background: #b3b3b3;
         color: white; }
     article nav li.current a {
       background: #cb1a72;
@@ -795,6 +853,20 @@ article {
   border-bottom: 1px solid #e6e6e6;
   margin-bottom: 15px;
   padding-top: 15px; }
+
+footer {
+  margin-top: 50px;
+  padding: 20px 0 50px; }
+  footer a:link, footer a:visited {
+    background: #cb1a72;
+    color: white;
+    display: block;
+    margin: 0 auto;
+    padding: 15px 0;
+    text-align: center;
+    width: 300px; }
+    footer a:link:hover, footer a:visited:hover {
+      background: #b51a6f; }
 
 /* =Media queries
 -------------------------------------------------------------- */
