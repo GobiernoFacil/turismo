@@ -1,0 +1,11 @@
+{
+  "name" : "información turística de 1990 a 2013",
+  "version" : "1.0",
+  "dependencies" : {
+    "require"    : "latest",
+    "jquery"     : "latest",
+    "underscore" : "latest",
+    "d3"         : "latest",
+    "backbone"   : "latest"
+  }
+}
