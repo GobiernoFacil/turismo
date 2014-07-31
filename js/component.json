@@ -1,11 +1,12 @@
 {
-  "name" : "información turística de 1990 a 2013",
-  "version" : "1.0",
-  "dependencies" : {
-    "require"    : "latest",
-    "jquery"     : "latest",
-    "underscore" : "latest",
-    "d3"         : "latest",
-    "backbone"   : "latest"
+  "name": "información turística de 1990 a 2013",
+  "version": "1.0",
+  "dependencies": {
+    "jquery": "latest",
+    "underscore": "latest",
+    "d3": "latest",
+    "backbone": "latest",
+    "text": "~2.0.12",
+    "requirejs": "~2.1.14"
   }
 }
