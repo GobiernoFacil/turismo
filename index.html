@@ -8,6 +8,9 @@
       height: 1em;
       width:1em;
     }
+    .selected{
+      color:red;
+    }
   </style>
 </head>
 <body>
@@ -41,6 +44,19 @@
       <li><span class="cuadrito" style="background:#d8ebf6;"></span> 2,000</li>
     </ul>
 
+    <!-- 
+       _____________________________________________
+      /                                             \
+      |  T H E   M A P   T Y P E   S E L E C T O R  |
+      \_____________________________________________/
+    -->
+    <ul id="map-type-selector">
+      <li>Mostrar:</li>
+      <li><a href="#" class="selected">Todos</a></li>
+      <li><a href="#">nacionales</a></li>
+      <li><a href="#">extranjeros</a></li>
+    </ul>
+
 
     <!-- 
        _____________________________________
@@ -50,7 +66,7 @@
     -->
     <form id="map-control">
       <p>
-        <label for="year-select-map">Turistas por estado</label>
+        <label for="year-select-map">Año</label>
         <select name="year" id="year-select-map">
           <option value="0">1990</option>
           <option value="1">1991</option>

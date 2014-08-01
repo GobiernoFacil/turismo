@@ -23,6 +23,7 @@ define(function(require){
     // D E F I N E   T H E   E V E N T S
     // 
     events : {
+      "click #map-type-selector a" : "set_map_type",
       "change #year-select-map" : "render_map"
     },
 
@@ -37,6 +38,11 @@ define(function(require){
     initialize : function(){
       // setup the data into a collection
       this.collection = new Backbone.Collection(Data.turismo);
+      // set the default type:
+      // all        -> 3
+      // mexicans   -> 1
+      // foreigners -> 2
+      this.map_type = 3;
 
       // render the map
       this.render_map();
@@ -46,29 +52,37 @@ define(function(require){
     // U P D A T E   M A P   F U N C T I O N
     //
     render_map : function(){
+      
       // select the data
       var select      = this.$('#year-select-map'),
-          index       = select.val(),
-          year        = this.$('option[value="' + index + '"]').html(),
+          year_index  = select.val(),
+          year        = this.$('option[value="' + year_index + '"]').html(),
           collection  = this.collection,
-          total_model = this.collection.findWhere({estado_id : 0, categoria_id : 3}),
-          total       = total_model.get('data_1990_2013')[index];
+          total_model = this.collection.findWhere({estado_id : 0, categoria_id : this.map_type}),
+          total       = total_model.get('data_1990_2013')[year_index];
 
       // render the TOTAL TOURIST LABEL
       this.$('#tourist-year-map-label').html(year);
       this.$('#tourist-total-map-label').html(total);
 
-      // set the colors on the map
+      // prepare the data
+      var data   = [];
+      for(var i = 1; i <= 32; i++){
+        var models = this.collection.where({categoria_id : this.map_type, estado_id : i});
+        data.push({
+          name  : this.collection.findWhere({estado_id : i}).get('estado'),
+          total : _.map(models, function(m){
+            return m.get('data_1990_2013')[year_index];
+          })
+        });
+      }
 
+      // set the colors on the map
       var states = d3.select('#Mexico')
         .selectAll('path')
         .attr('style', function(){
-          var id     = this.getAttribute('id'),
-              models = collection.where({estado_id : Number(id)}),
-              data   = _.map(models, function(d,i){
-                return d.get('data_1990_2013')[index];
-              }),
-              total = d3.sum(data),
+          var id    = this.getAttribute('id'),
+              total = d3.sum(data[id - 1].total),
               fill  = '';
 
               if(total >= 12000000){
@@ -88,6 +102,39 @@ define(function(require){
               }
           return 'fill: ' + fill + '; cursor: pointer';
         });
+
+
+    },
+
+    //
+    // SET THE MAP TYPE (all, mexicans, foreigners)
+    //
+    set_map_type : function(e){
+      // master trick
+      var old_type = this.map_type;
+
+      // update the "selected" class
+      this.$('#map-type-selector a').removeClass('selected');
+      this.$(e.currentTarget).addClass('selected');
+
+      // set the new type of map
+      var type = this.$(e.currentTarget).html().toLowerCase();
+      if(type === "todos"){
+        this.map_type = 3;
+      }
+      else if(type === "nacionales"){
+        this.map_type = 1;
+      }
+      else{
+        this.map_type = 2;
+      }
+
+      // render the map
+      if(! (old_type === this.map_type) ){
+        this.render_map();
+      }
+
+      return false;
     }
   });
 
