@@ -23,14 +23,18 @@ define(function(require){
     // D E F I N E   T H E   E V E N T S
     // 
     events : {
-      "click #map-type-selector a" : "set_map_type",
-      "change #year-select-map" : "render_map"
+      "click #map-type-selector a" : "set_type",
+      "click #bar-type-selector a" : "set_type",
+      "change #year-select-map" : "render_map",
+      "change #year-select-bar" : "render_barchart"
     },
+
 
     //
     // S E T   T H E   C O N T A I N E R
     //
     el : "#main.turismo",
+
 
     //
     // T H E   I N I T I A L I Z E   F U N C T I O N
@@ -42,42 +46,45 @@ define(function(require){
       // all        -> 3
       // mexicans   -> 1
       // foreigners -> 2
-      this.map_type = 3;
+      this.map_type = this.bar_type = 3;
 
-      // render the map
+      // render the project
       this.render_map();
+      this.render_barchart();
     },
+
 
     //
     // U P D A T E   M A P   F U N C T I O N
     //
     render_map : function(){
       
-      // select the data
+      // SELECT THE DATA
       var select      = this.$('#year-select-map'),
           year_index  = select.val(),
-          year        = this.$('option[value="' + year_index + '"]').html(),
+          year        = this.$('option[value="' + year_index + '"]', select).html(),
           collection  = this.collection,
-          total_model = this.collection.findWhere({estado_id : 0, categoria_id : this.map_type}),
+          total_model = collection.findWhere({estado_id : 0, categoria_id : this.map_type}),
           total       = total_model.get('data_1990_2013')[year_index];
 
-      // render the TOTAL TOURIST LABEL
+      // RENDER THE TOTAL TOURIST LABEL
       this.$('#tourist-year-map-label').html(year);
       this.$('#tourist-total-map-label').html(total);
 
-      // prepare the data
+      // PREPARE THE DATA
       var data   = [];
       for(var i = 1; i <= 32; i++){
-        var models = this.collection.where({categoria_id : this.map_type, estado_id : i});
+        var models = collection.where({categoria_id : this.map_type, estado_id : i});
         data.push({
-          name  : this.collection.findWhere({estado_id : i}).get('estado'),
+          name  : collection.findWhere({estado_id : i}).get('estado'),
           total : _.map(models, function(m){
             return m.get('data_1990_2013')[year_index];
           })
         });
       }
 
-      // set the colors on the map
+
+      // SET THE COLORS ON THE MAP
       var states = d3.select('#Mexico')
         .selectAll('path')
         .attr('style', function(){
@@ -106,27 +113,103 @@ define(function(require){
 
     },
 
+
     //
-    // SET THE MAP TYPE (all, mexicans, foreigners)
+    // U P D A T E   B A R C H A R T   F U N C T I O N
     //
-    set_map_type : function(e){
+    render_barchart : function(){
+      // CLEAN THE BARCHART
+      this.$('#barchart').html('');
+      // SELECT THE DATA
+      var select       = this.$('#year-select-bar'),
+          year_index   = select.val(),
+          year         = this.$('option[value="' + year_index + '"]', select).html(),
+          collection   = this.collection,
+          destinos     = new Backbone.Collection(collection.where({categoria_id : this.bar_type})),
+          destinos_num = 30;
+
+      // get the most popular. The function sortBy orders the collection with an 'ASC' method
+      // so, the collection must be reversed, and then, the first value must be removed,
+      // because it's the total <slice(1,31)>
+      var data = destinos.sortBy(function(m){
+        return m.get('data_1990_2013')[year_index];
+      }).reverse().slice(1,destinos_num + 1);
+
+      // set the domain, range and scale for the bars
+      var extent = d3.extent(data, function(d){
+        return d.get('data_1990_2013')[year_index];
+      });
+      var scale = d3.scale.linear()
+        .range([100, 500])
+        .domain(extent);
+
+      // draw the bars container
+      var bars = d3.select('#barchart')
+        .selectAll('p')
+        .data(data)
+        .enter()
+          .append('p');
+      
+      // draw the labels
+      bars.append('span')
+        .attr('class', 'label')
+        .text(function(d,i){
+          return (i+1) + '. ' + d.get('destino') + ': ';
+        });
+
+      // draw the bars
+      bars.append('span')
+        .attr('class', 'bar')
+        .text(function(d){
+          return d.get('data_1990_2013')[year_index];
+        })
+        .style('width', function(d){
+          return scale(d.get('data_1990_2013')[year_index]) + 'px';
+        });
+    },
+
+
+    //
+    // SET THE TYPE (all, mexicans, foreigners)
+    //
+    set_type : function(e){
       // master trick
-      var old_type = this.map_type;
+      var item     = this.$(e.currentTarget),
+          parent   = item.parent().parent(),
+          graph    = parent.attr('id') == 'map-type-selector' ? 'map' : 'bar',
+          old_type = graph == 'map' ? this.map_type : this.bar_type,
+          type     = item.html().toLowerCase(),
+          new_type = 0;
 
       // update the "selected" class
-      this.$('#map-type-selector a').removeClass('selected');
-      this.$(e.currentTarget).addClass('selected');
+      parent.find('a').removeClass('selected');
+      item.addClass('selected');
 
       // set the new type of map
-      var type = this.$(e.currentTarget).html().toLowerCase();
       if(type === "todos"){
-        this.map_type = 3;
+        new_type = 3;
       }
       else if(type === "nacionales"){
-        this.map_type = 1;
+        new_type = 1;
       }
       else{
-        this.map_type = 2;
+        new_type = 2;
+      }
+
+      // update the graph
+      // MAP
+      if(graph == 'map'){
+        this.map_type = new_type;
+        if(! (old_type === new_type) ){
+          this.render_map();
+        }
+      }
+      // BAR
+      else{
+        this.bar_type = new_type;
+        if(! (old_type === new_type) ){
+          this.render_barchart();
+        }
       }
 
       // render the map
