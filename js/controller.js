@@ -117,9 +117,7 @@ define(function(require){
  				else if(total > 8000000) {
 	 				fill = "#990066";
  				}
-				
-				
-				             
+							             
 			return 'fill: ' + fill + '; cursor: pointer';
         });
 
@@ -139,7 +137,7 @@ define(function(require){
           year         = this.$('option[value="' + year_index + '"]', select).html(),
           collection   = this.collection,
           destinos     = new Backbone.Collection(collection.where({categoria_id : this.bar_type})),
-          destinos_num = 15,
+          destinos_num = 30,
           min_width    = 100,
           max_width    = 500;
 
@@ -157,7 +155,13 @@ define(function(require){
       var scale = d3.scale.linear()
         .range([min_width, max_width])
         .domain(extent);
-
+	  
+	  //agrega escala para color
+	  var colorScaleBar = d3.scale.linear()
+		.range(['#369ad5', '#bc1d78']) 
+		.domain(extent);
+	  
+	  
       // draw the bars container
       var bars = d3.select('#barchart')
         .selectAll('p')
@@ -168,19 +172,31 @@ define(function(require){
       // draw the labels
       bars.append('span')
         .attr('class', 'label')
-        .text(function(d,i){
-          return (i+1) + '. ' + d.get('destino') + ': ';
+		.text(function(d,i){
+				return  (i+1) + '. ';
+		})
+		//agrega strong para diferencia de index
+		.append('strong')
+		 	.text(function(d,i){
+           return  d.get('destino') + ': ';
         });
 
       // draw the bars
       bars.append('span')
-        .attr('class', 'bar')
-        .text(function(d){
-          return d.get('data_1990_2013')[year_index];
-        })
+        .attr('class', 'bar')        
         .style('width', function(d){
           return scale(d.get('data_1990_2013')[year_index]) + 'px';
-        });
+        })
+        // agrega colorScaleBar
+        .style('background', function(d){
+		return colorScaleBar(d.get('data_1990_2013')[year_index]);
+		})
+		//metemos valor en span
+		.append('span')
+        	.attr('class','value')
+			.text(function(d){
+				return d.get('data_1990_2013')[year_index];
+		});
     },
 
     //
