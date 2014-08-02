@@ -909,6 +909,9 @@ article {
     display: block;
     margin: 0 auto; }
 
+/******
+/ map
+/*********/
 .tourist-label {
   text-align: center; }
   .tourist-label strong {
@@ -953,15 +956,34 @@ article {
   height: 10px;
   width: 100%; }
 
+/******
+/ barchart
+/*********/
+#barchart p {
+  margin: 0 0 1px; }
 #barchart span.label {
   display: inline-block;
-  width: 200px; }
-
+  padding-right: 6px;
+  text-align: right;
+  width: 223px;
+  font-weight: 300; }
+  #barchart span.label strong {
+    font-weight: 500; }
+  #barchart span.label:hover {
+    color: black;
+    cursor: pointer; }
+    #barchart span.label:hover + span.bar .value {
+      color: #fff; }
 #barchart span.bar {
   color: white;
-  display: inline-block;
-  border: 1px solid gold;
-  background: blue; }
+  display: inline-block; }
+  #barchart span.bar span.value {
+    margin-left: 8px;
+    color: rgba(255, 255, 255, 0); }
+  #barchart span.bar:hover {
+    cursor: pointer; }
+    #barchart span.bar:hover .value {
+      color: #fff; }
 
 /* the line graph style */
 .axis path, line {

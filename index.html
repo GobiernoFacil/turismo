@@ -232,12 +232,12 @@
       |  T H E   B A R   T Y P E   S E L E C T O R  |
       \_____________________________________________/
     -->
-    <div class="col-md-8">
+    <div class="col-md-7">
     	<ul id="bar-type-selector">
     	  <li>Mostrar:</li>
     	  <li><a href="#" class="selected">Todos</a></li>
-    	  <li><a href="#">nacionales</a></li>
-    	  <li><a href="#">extranjeros</a></li>
+    	  <li><a href="#">Nacionales</a></li>
+    	  <li><a href="#">Extranjeros</a></li>
     	</ul>
     </div>
 
@@ -250,7 +250,7 @@
     <div class="col-md-4">
     	<form id="bar-control">
     	  <p class="right">
-    	    <label for="year-select-bar">Año</label>
+    	    <label for="year-select-bar">Año:
     	    <select name="year" id="year-select-bar">
     	      <option value="0">1990</option>
     	      <option value="1">1991</option>
@@ -277,6 +277,7 @@
     	      <option value="22">2012</option>
     	      <option value="23" selected>2013</option>
     	    </select>
+    	    </label>
     	  </p>
     	</form><!-- ENDS YEAR SELECTOR -->
     </div><!-- ends col-md-4-->
@@ -287,8 +288,11 @@
       |  T H E   B A R C H A R T  |
       \___________________________/
     -->
-    <div id="barchart"></div>
-
+    <div class="row magia">
+    	<div class="col-md-8 col-md-offset-2">
+   		<div id="barchart"></div>
+    	</div>
+    </div>
   </article><!-- ~ ENDS THE BARS SECTION -->
 
 
