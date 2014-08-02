@@ -27,7 +27,7 @@ define(function(require){
       "click #bar-type-selector a" : "set_type",
       "change #year-select-map"    : "render_map",
       "change #year-select-bar"    : "render_barchart",
-      "change #place-selector"     : "render_linechart"
+      "change #place-selector"     : "update_linechart"
     },
 
 
@@ -53,6 +53,7 @@ define(function(require){
       this.render_location_selector();
       this.render_map();
       this.render_barchart();
+      this.render_linechart();
     },
 
 
@@ -128,7 +129,9 @@ define(function(require){
           year         = this.$('option[value="' + year_index + '"]', select).html(),
           collection   = this.collection,
           destinos     = new Backbone.Collection(collection.where({categoria_id : this.bar_type})),
-          destinos_num = 5;
+          destinos_num = 5,
+          min_width    = 100,
+          max_width    = 500;
 
       // get the most popular. The function sortBy orders the collection with an 'ASC' method
       // so, the collection must be reversed, and then, the first value must be removed,
@@ -142,7 +145,7 @@ define(function(require){
         return d.get('data_1990_2013')[year_index];
       });
       var scale = d3.scale.linear()
-        .range([100, 500])
+        .range([min_width, max_width])
         .domain(extent);
 
       // draw the bars container
@@ -174,11 +177,149 @@ define(function(require){
     // U P D A T E   R A Y I T A S   G R A P H   F U N C T I O N
     //
     render_linechart : function(){
-      var location = this.$('#place-selector').val(),
-          values   = new Backbone.Collection(this.collection.where({destino : location}))
-            .pluck('data_1990_2013');
-          console.table(values);
+      // SET THE CONSTRUCTION VARS
+      var location  = this.$('#place-selector').val(),
+          values    = new Backbone.Collection(this.collection.where({destino : location}))
+            .pluck('data_1990_2013'),
+          container = {
+            width  : 700,
+            height : 500
+          },
+          margin = {
+            top    : 10,
+            right  : 20,
+            bottom : 30,
+            left   : 60
+          };
 
+      // GENERATE THE GRAPH CONTAINER
+      var chart = d3.select('#line-graph-container')
+        .append('svg')
+          .attr('width', container.width)
+          .attr('height', container.height)
+          .append('g')
+            .attr('transform', 'translate(' + margin.left +', '+ margin.top +')')
+            .attr('id', 'chart');
+
+      // SETUP THE SCALES
+      var time_scale = d3.time.scale()
+        .range([0, container.width - margin.left - margin.right])
+        .domain([new Date(1990,0,1), new Date(2013,0,1)]);
+
+      var visits_scale = d3.scale.linear()
+        .range([container.height - margin.top - margin.bottom, 0])
+        .domain(d3.extent(values[0].concat(values[1], values[2])));
+
+      // SETUP THE AXIS
+      var time_axis = d3.svg.axis()
+        .scale(time_scale);
+
+      var visits_axis = d3.svg.axis()
+        .scale(visits_scale)
+        .orient('left')
+        .tickFormat(d3.format("s"));
+
+      chart.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0, ' + (container.height - margin.top - margin.bottom) + ')')
+        .call(time_axis);
+
+      chart.append('g')
+        .attr('class', 'y axis')
+        .call(visits_axis);
+
+      // draw the lines
+      var line = d3.svg.line()
+        .x(function(d,i){
+          return time_scale(new Date(i + 1990, 0, 1));
+        })
+        .y(function(d){
+          return visits_scale(d);
+        });
+
+      // LINE A
+      chart.append('path')
+        .attr('d', line(values[0]))
+        .attr('class', 'all');
+
+      // LINE B
+      chart.append('path')
+        .attr('d', line(values[1]))
+        .attr('class', 'mexicans');
+
+      // LINE C
+      chart.append('path')
+        .attr('d', line(values[2]))
+        .attr('class', 'foreigners');
+
+
+    },
+
+    //
+    // UPDATE THE LINE CHART
+    //
+    update_linechart : function(){
+      // SET THE CONSTRUCTION VARS
+      var location  = this.$('#place-selector').val(),
+          values    = new Backbone.Collection(this.collection.where({destino : location}))
+            .pluck('data_1990_2013'),
+          container = {
+            width  : 700,
+            height : 500
+          },
+          margin = {
+            top    : 10,
+            right  : 20,
+            bottom : 30,
+            left   : 60
+          };
+
+      // SETUP THE SCALES
+      var time_scale = d3.time.scale()
+        .range([0, container.width - margin.left - margin.right])
+        .domain([new Date(1990,0,1), new Date(2013,0,1)]);
+
+      var visits_scale = d3.scale.linear()
+        .range([container.height - margin.top - margin.bottom, 0])
+        .domain(d3.extent(values[0].concat(values[1], values[2])));
+
+
+      // SETUP THE AXIS
+      var time_axis = d3.svg.axis()
+        .scale(time_scale);
+
+      var visits_axis = d3.svg.axis()
+        .scale(visits_scale)
+        .orient('left')
+        .tickFormat(d3.format("s"));
+
+      d3.select('g.y.axis')
+        .call(visits_axis);
+
+
+      // UPDATE THE LINES
+      var line = d3.svg.line()
+        .x(function(d,i){
+          return time_scale(new Date(i + 1990, 0, 1));
+        })
+        .y(function(d){
+          return visits_scale(d);
+        });
+
+      // LINE A
+      d3.select('path.all')
+        .transition()
+        .attr('d', line(values[0]));
+
+      // LINE B
+      d3.select('path.mexicans')
+        .transition()
+        .attr('d', line(values[1]));
+
+      // LINE C
+      d3.select('path.foreigners')
+        .transition()
+        .attr('d', line(values[2]));
     },
 
     //

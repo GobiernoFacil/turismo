@@ -23,6 +23,24 @@
       border: 1px solid gold;
       background: blue;
     }
+
+    /* the line graph style */
+    .axis path, line{
+      stroke : black;
+    }
+    path{
+      fill : none;
+    }
+    path.all{
+      stroke : red;
+    }
+    path.mexicans{
+      stroke : blue;
+    }
+    path.foreigners{
+      stroke : green;
+    }
+
   </style>
 </head>
 <body>
@@ -261,7 +279,16 @@
         <label for="place-selector">destino</label>
         <select name="place" id="place-selector"></select>
       </p>
-    </form><!-- en
+    </form><!-- ENDS PLACE SELECTOR -->
+
+    <!-- 
+       __________________________________________________
+      /                                                  \
+      |  T H E   L I N E   G R A P H   C O N T A I N E R |
+      \__________________________________________________/
+    -->
+    <div id="line-graph-container">
+    </div><!-- ENDS LINE GRAPH CONTAINER -->
 
   </section><!-- ~ ENDS THE LINE GRAPH SECTION -->
 
