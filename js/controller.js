@@ -86,31 +86,23 @@ define(function(require){
         });
       }
 
+	 
 
       // SET THE COLORS ON THE MAP
       var states = d3.select('#Mexico')
         .selectAll('path')
         .attr('style', function(){
-          var id    = this.getAttribute('id'),
-              total = d3.sum(data[id - 1].total),
-              fill  = '';
-
-              if(total >= 12000000){
-                fill = "#27769f";
-              }
-              else if(total >= 4000000){
-                fill = "#4ea6d9";
-              }
-              else if(total >= 500000){
-                fill = "#b1d8ee";
-              }
-              else if(total >= 2000){
-                fill = "#d8ebf6";
-              }
-              else{
-                fill = "#fff";
-              }
-          return 'fill: ' + fill + '; cursor: pointer';
+        	// agrega d3.scale
+        	var colorScale = d3.scale.linear()
+				.range(['#7ec8f2', '#bc1d78']) 
+				.domain([0, 12022748]);
+			//	
+			var id    = this.getAttribute('id'),
+				total = d3.sum(data[id - 1].total),
+				// agrega colorScale
+				fill  = colorScale(total); 
+				             
+			return 'fill: ' + fill + '; cursor: pointer';
         });
 
 
@@ -129,7 +121,7 @@ define(function(require){
           year         = this.$('option[value="' + year_index + '"]', select).html(),
           collection   = this.collection,
           destinos     = new Backbone.Collection(collection.where({categoria_id : this.bar_type})),
-          destinos_num = 5,
+          destinos_num = 15,
           min_width    = 100,
           max_width    = 500;
 
