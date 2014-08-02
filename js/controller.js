@@ -25,8 +25,9 @@ define(function(require){
     events : {
       "click #map-type-selector a" : "set_type",
       "click #bar-type-selector a" : "set_type",
-      "change #year-select-map" : "render_map",
-      "change #year-select-bar" : "render_barchart"
+      "change #year-select-map"    : "render_map",
+      "change #year-select-bar"    : "render_barchart",
+      "change #place-selector"     : "render_linechart"
     },
 
 
@@ -49,6 +50,7 @@ define(function(require){
       this.map_type = this.bar_type = 3;
 
       // render the project
+      this.render_location_selector();
       this.render_map();
       this.render_barchart();
     },
@@ -126,7 +128,7 @@ define(function(require){
           year         = this.$('option[value="' + year_index + '"]', select).html(),
           collection   = this.collection,
           destinos     = new Backbone.Collection(collection.where({categoria_id : this.bar_type})),
-          destinos_num = 30;
+          destinos_num = 5;
 
       // get the most popular. The function sortBy orders the collection with an 'ASC' method
       // so, the collection must be reversed, and then, the first value must be removed,
@@ -166,6 +168,31 @@ define(function(require){
         .style('width', function(d){
           return scale(d.get('data_1990_2013')[year_index]) + 'px';
         });
+    },
+
+    //
+    // U P D A T E   R A Y I T A S   G R A P H   F U N C T I O N
+    //
+    render_linechart : function(){
+      var location = this.$('#place-selector').val(),
+          values   = new Backbone.Collection(this.collection.where({destino : location}))
+            .pluck('data_1990_2013');
+          console.table(values);
+
+    },
+
+    //
+    // FILL THE PLACE SELECTOR
+    //
+    render_location_selector : function(){
+      var selector = this.$('#place-selector'),
+          models   = this.collection.where({categoria_id : 1}),
+          names    = new Backbone.Collection(models).pluck('destino');
+
+      // append the options!!!! n____n
+      for(var i = 0; i < names.length - 1; i++){
+        selector.append('<option>' + names[i] + '</option>');
+      }
     },
 
 
@@ -210,11 +237,6 @@ define(function(require){
         if(! (old_type === new_type) ){
           this.render_barchart();
         }
-      }
-
-      // render the map
-      if(! (old_type === this.map_type) ){
-        this.render_map();
       }
 
       return false;
