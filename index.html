@@ -1,56 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-
-
-
+	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>Destinos turísticos en México</title>
 	<meta name="description" content="Evolución de turistas extranjeros y nacionales en un grupo de sitios turísticos seleccionados de 1990 a 2013. ">
 	<meta name="viewport" content="width=device-width">
 	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" type="text/css" href="css/styles.css" />
-  <style>
-    .cuadrito{
-      display: inline-block;
-      height: 1em;
-      width:1em;
-    }
-    .selected{
-      color:red;
-    }
-
-    #barchart span.label{
-      display: inline-block;
-      width: 200px;
-    }
-
-    #barchart span.bar{
-      color:white;
-      display: inline-block;
-      border: 1px solid gold;
-      background: blue;
-    }
-
-    /* the line graph style */
-    .axis path, line{
-      stroke : black;
-    }
-    path{
-      fill : none;
-    }
-    path.all{
-      stroke : red;
-    }
-    path.mexicans{
-      stroke : blue;
-    }
-    path.foreigners{
-      stroke : green;
-    }
-
-  </style>
 </head>
 <body>
 <header>
@@ -106,8 +63,8 @@
     <ul id="map-type-selector">
       <li>Mostrar:</li>
       <li><a href="#" class="selected">Todos</a></li>
-      <li><a href="#">nacionales</a></li>
-      <li><a href="#">extranjeros</a></li>
+      <li><a href="#">Nacionales</a></li>
+      <li><a href="#">Extranjeros</a></li>
     </ul>
     </div>
    <!-- 
@@ -116,36 +73,36 @@
       |  T H E   Y E A R   S E L E C T O R  |
       \_____________________________________/
     -->
-	<div class="col-md-4">
+	<div class="col-md-3">
     <form id="map-control">
       <p class="right">
-        <label for="year-select-map">Año</label>
+        <label for="year-select-map">Año:
         <select name="year" id="year-select-map">
-          <option value="0">1990</option>
-          <option value="1">1991</option>
-          <option value="2">1992</option>
-          <option value="3">1993</option>
-          <option value="4">1994</option>
-          <option value="5">1995</option>
-          <option value="6">1996</option>
-          <option value="7">1997</option>
-          <option value="8">1998</option>
-          <option value="9">1999</option>
-          <option value="10">2000</option>
-          <option value="11">2001</option>
-          <option value="12">2002</option>
-          <option value="13">2003</option>
-          <option value="14">2004</option>
-          <option value="15">2005</option>
-          <option value="16">2006</option>
-          <option value="17">2007</option>
-          <option value="18">2008</option>
-          <option value="19">2009</option>
-          <option value="20">2010</option>
-          <option value="21">2011</option>
-          <option value="22">2012</option>
           <option value="23" selected>2013</option>
-        </select>
+          <option value="22">2012</option>
+          <option value="21">2011</option>
+          <option value="20">2010</option>
+          <option value="19">2009</option>
+          <option value="18">2008</option>
+          <option value="17">2007</option>
+          <option value="16">2006</option>
+          <option value="15">2005</option>
+          <option value="14">2004</option>
+          <option value="13">2003</option>
+          <option value="12">2002</option>
+          <option value="11">2001</option>
+          <option value="10">2000</option>
+          <option value="9">1999</option>
+          <option value="8">1998</option>
+          <option value="7">1997</option>
+          <option value="6">1996</option>
+          <option value="5">1995</option>
+          <option value="4">1994</option>
+          <option value="3">1993</option>
+          <option value="2">1992</option>
+          <option value="1">1991</option>
+          <option value="0">1990</option>
+        </select></label>
       </p>
     </form> <!-- ends "turists by state (year)" selector -->
     </div><!-- col-md-4-->
@@ -153,32 +110,19 @@
 	</nav><!--ends nav-->
 	
 	<div class="row">
-	<div class="col-md-2">
-	 <!-- 
-       ___________________________________________
-      /                                           \
-      |  T H E   C O L O R   T A B   L E G E N D  |
-      \___________________________________________/
-    -->
-    <ul>
-      <li><span class="cuadrito" style="background:#27769f;"></span> 12,000,000</li>
-      <li><span class="cuadrito" style="background:#4ea6d9;"></span> 4,000,000</li>
-      <li><span class="cuadrito" style="background:#b1d8ee;"></span> 500,000</li>
-      <li><span class="cuadrito" style="background:#d8ebf6;"></span> 2,000</li>
-    </ul>
-	</div><!--ends col-md-2"-->
 	
-	<div class="col-md-10">
+	
+	<div class="col-md-10 col-md-offset-1 magia">
     <!--
        _________________________________________ 
       /                                         \
       |  T O T A L   T O U R I S T   L A B E L  | 
       \_________________________________________/
     -->
-    <p class="tourist-label right">
+    <h3 class="tourist-label">
       <strong id="tourist-total-map-label"></strong>
       Turistas en <span id="tourist-year-map-label"></span>
-    </p>
+    </h3>
 
    
 
@@ -231,7 +175,30 @@
         </g>
     </svg><!-- ENDS THE MEXICO SVG MAP -->
     
+	 <!-- 
+       ___________________________________________
+      /                                           \
+      |  T H E   C O L O R   T A B   L E G E N D  |
+      \___________________________________________/
+    -->
+    <div class="color-legend">
+   	 <ul  class="clearfix">
+   	   <li><span class="cuadrito" style="background:#cff3ff;"></span></li>
+   	   <li><span class="cuadrito" style="background:#b6e6f9;"></span></li>      
+   	   <li class="millon"><span class="cuadrito" style="background:#7ec8f2;"></span> 750 mil</li>
+   	   <li class="millon"><span class="cuadrito" style="background:#8f9ad1;"></span> <strong>1.8</strong> mill.</li>
+   	   <li class="millon"><span class="cuadrito" style="background:#9f6db1;"></span> <strong>4.3</strong> mill.</li>
+   	   <li class="millon"><span class="cuadrito" style="background:#ad4695;"></span> <strong>6.1</strong> mill.</li>
+   	   <li class="millon right"><span class="cuadrito" style="background:#bc1d78;"></span> <strong>8</strong> millones</li>
+   	   <li><span class="cuadrito" style="background:#990066;"></span> +</li>
+   	  </ul>
+     
+      <p class="sindatos"><span class="cuadro-sin"></span> Sin datos</p>
+
+	</div>
 	</div><!-- ends col-md-10-->
+	
+
 	</div><!-- ends row-->
 	
   </article> <!-- ~ ENDS THE MAP SECTION -->
