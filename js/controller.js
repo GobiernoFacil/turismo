@@ -95,12 +95,30 @@ define(function(require){
         	// agrega d3.scale
         	var colorScale = d3.scale.linear()
 				.range(['#7ec8f2', '#bc1d78']) 
-				.domain([0, 12022748]);
+				.domain([750000, 8000000]);
+			var colorScale250 = d3.scale.linear()
+				.range(['#cff3ff', '#7ec8f2']) 
+				.domain([1, 750000]);
 			//	
 			var id    = this.getAttribute('id'),
 				total = d3.sum(data[id - 1].total),
 				// agrega colorScale
-				fill  = colorScale(total); 
+				fill  = colorScale(total);
+				 
+				// agrego un if para el 0
+				if(total == 0){
+ 	                fill = "#f2f2f2";
+ 				}
+				// agrego un else if para la escala de colores menor a 750 mil
+				else if(total < 750000){
+ 	                fill = colorScale250(total);
+ 				}
+				// agrego un else if para la escala mayor a 8 millones
+ 				else if(total > 8000000) {
+	 				fill = "#990066";
+ 				}
+				
+				
 				             
 			return 'fill: ' + fill + '; cursor: pointer';
         });
