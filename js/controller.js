@@ -68,11 +68,14 @@ define(function(require){
           year        = this.$('option[value="' + year_index + '"]', select).html(),
           collection  = this.collection,
           total_model = collection.findWhere({estado_id : 0, categoria_id : this.map_type}),
-          total       = total_model.get('data_1990_2013')[year_index];
+          total       = total_model.get('data_1990_2013')[year_index],
+          //formato a total
+		  totalf 	= total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          ;
 
       // RENDER THE TOTAL TOURIST LABEL
       this.$('#tourist-year-map-label').html(year);
-      this.$('#tourist-total-map-label').html(total);
+      this.$('#tourist-total-map-label').html(totalf);
 
       // PREPARE THE DATA
       var data   = [];
@@ -195,7 +198,10 @@ define(function(require){
 		.append('span')
         	.attr('class','value')
 			.text(function(d){
-				return d.get('data_1990_2013')[year_index];
+				var value 	= d.get('data_1990_2013')[year_index],
+					//formato a valor
+					valuef 	= value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				return valuef;
 		});
     },
 
