@@ -256,6 +256,8 @@ nav select {
     border: 0; }
   nav select:hover {
     background: #333; }
+  nav select#place-selector {
+    min-width: 256px; }
 
 label {
   position: relative; }
@@ -277,8 +279,8 @@ label:after {
 
 label:before {
   content: '';
-  right: 0px;
-  top: 0px;
+  right: 0;
+  top: 0;
   width: 30px;
   height: 20px;
   position: absolute;
@@ -985,22 +987,55 @@ article {
     #barchart span.bar:hover .value {
       color: #fff; }
 
-/* the line graph style */
+/******
+/ /* the line graph style */
+/*********/
 .axis path, line {
-  stroke: black; }
+  stroke: #999; }
+
+.tick {
+  font: 500 15px 'roboto', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  fill: #999999; }
+
+.y.axis path.domain {
+  stroke: white; }
+
+.x.axis path.domain {
+  stroke: #ccc; }
+.x.axis path {
+  fill: rgba(0, 0, 0, 0.03); }
 
 path {
   fill: none; }
+  path.all {
+    stroke: #d13d77; }
+  path.mexicans {
+    stroke: #60be80; }
+  path.foreigners {
+    stroke: #20b8c8; }
 
-path.all {
-  stroke: red; }
+.label-graph {
+  font-size: 13px;
+  margin: 15px auto;
+  text-align: center; }
+  .label-graph .label {
+    background: #ccc;
+    width: 1em;
+    display: inline-block;
+    height: 1em;
+    font-size: 11px;
+    margin-left: 10px; }
+    .label-graph .label.total {
+      background: #d13d77; }
+    .label-graph .label.nacional {
+      background: #60be80; }
+    .label-graph .label.extranjero {
+      background: #20b8c8; }
 
-path.mexicans {
-  stroke: blue; }
-
-path.foreigners {
-  stroke: green; }
-
+/******
+/ /* footer */
+/*********/
 footer {
   margin-top: 50px;
   padding: 20px 0 50px; }
