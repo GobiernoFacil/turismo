@@ -152,7 +152,7 @@ define(function(require){
             .append("text")
               .text(d.name + ': ' + that.format(t))
               .attr('x', x)
-              .attr('y', y;
+              .attr('y', y);
         });
     },
 
