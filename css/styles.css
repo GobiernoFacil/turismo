@@ -873,8 +873,14 @@ header {
       display: block;
       font: 500 111px/1 'robotoblack'; }
 
+strong {
+  font-weight: 700; }
+
 p {
   font: 500 15px 'roboto', Helvetica, Arial, sans-serif; }
+
+.lead {
+  font-size: 18px; }
 
 h2 {
   font: 700 28px 'roboto'; }
