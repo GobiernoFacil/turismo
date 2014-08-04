@@ -925,6 +925,15 @@ article {
   .tourist-label strong {
     font-family: 'robotoblack'; }
 
+#Mexico text {
+  width: 50px;
+  font-family: 'robotoblack';
+  font-size: 12px;
+  fill: white;
+  stroke: none; }
+  #Mexico text tspan {
+    font-family: 'roboto'; }
+
 .color-legend {
   bottom: 70px;
   position: absolute;

@@ -131,28 +131,52 @@ define(function(require){
               t  = d3.sum(d.total),
               y  = bb.y + (bb.height/2)
               x  = bb.x + (bb.width/2);
-              // ese huguillo, nomás falta ajustar que la etiqueta 
-              // no se corte en los estados más a la derecha (no me
-              // refiero a los que gobierna el PAN, sino a la derecha
-              // del mapa jajaja).
-              // ahí yo creo que se soluciona con una función para calcular X
-              // algo estilo:
-              //
-              // x = function(){
-              //   if(no tan a la derecha)
-              //     return bb.x + (bb.width/2);
-              //   else
-              //     return algún master trick con un valor menos a la derecha
-              // }
-
+              // ese coruco, solo dos estados truenan, por tiempo
+              // mejor aplico a esos estados
+              if ((id==23) || (id==31)) {
+	              x = x - 80;  
+              }			  
           // remove the previous labels
           d3.selectAll('#Mexico text').remove();
-
-          d3.select('#Mexico')
+          d3.selectAll('#Mexico rect').remove();
+		  
+		  // esto es solo para calcular ancho
+		  d3.select('#Mexico') 
             .append("text")
-              .text(d.name + ': ' + that.format(t))
-              .attr('x', x)
-              .attr('y', y);
+            	.attr('id','azul')
+				.text(d.name + ':')
+				.attr("x", (x +5))
+                .attr("y", (y +15))
+				.append("tspan")
+					.attr("x", (x+5))
+              		.attr("y", (y+10))
+					.text(that.format(t));
+          
+          var widthS = document.getElementById('azul').offsetWidth;
+		  //elimina text trazado solo para calcular
+		  d3.selectAll('#Mexico text').remove();
+          
+          //agrega rectángulo    		
+          d3.select('#Mexico')
+          	.append("rect")
+          		.attr("width", widthS + 10)
+                .attr("height", 40)
+             	.attr("x", (x))
+                .attr("y", y)
+                .attr('fill', '#282827')
+                .attr('fill-opacity', 0.8);
+                
+           //agrega texto sobre rectángulo 
+           d3.select('#Mexico') 
+            .append("text")
+				.text(d.name + ':')
+				.attr("x", (x +5))
+                .attr("y", (y +15))
+				.append("tspan")
+              		.attr("x", (x+5))
+              		.attr("y", (y+10))
+			  		.attr('dy', '1.5em')
+              		.text(that.format(t));
         });
     },
 
