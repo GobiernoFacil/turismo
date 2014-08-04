@@ -1048,22 +1048,25 @@ path {
     .label-graph .label.extranjero {
       background: #20b8c8; }
 
+small {
+  font-size: 11px; }
+
 /******
 / /* footer */
 /*********/
 footer {
   margin-top: 50px;
   padding: 20px 0 50px; }
-  footer a:link, footer a:visited {
-    background: #cb1a72;
-    color: white;
-    display: block;
-    margin: 0 auto;
-    padding: 15px 0;
-    text-align: center;
-    width: 300px; }
-    footer a:link:hover, footer a:visited:hover {
-      background: #b51a6f; }
+  footer p {
+    border-top: 1px solid #ccc;
+    padding: 20px;
+    text-align: center; }
+    footer p a:link, footer p a:visited {
+      background: transparent;
+      color: black; }
+      footer p a:link:hover, footer p a:visited:hover {
+        color: #333333;
+        border-bottom: 1px dotted #333333; }
 
 /* =Media queries
 -------------------------------------------------------------- */
