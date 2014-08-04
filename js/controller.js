@@ -49,6 +49,9 @@ define(function(require){
       // foreigners -> 2
       this.map_type = this.bar_type = 3;
 
+      // add a number format function
+      this.format = d3.format(',');
+
       // render the project
       this.render_location_selector();
       this.render_map();
@@ -69,16 +72,21 @@ define(function(require){
           collection  = this.collection,
           total_model = collection.findWhere({estado_id : 0, categoria_id : this.map_type}),
           total       = total_model.get('data_1990_2013')[year_index],
-          //formato a total
-		  totalf 	= total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          ;
+          // ADD A d3.scale
+          colorScale = d3.scale.linear()
+            .range(['#7ec8f2', '#bc1d78']) 
+            .domain([750000, 8000000]),
+          colorScale250 = d3.scale.linear()
+            .range(['#cff3ff', '#7ec8f2']) 
+            .domain([1, 750000]),
+          that = this; // just for this time :P
 
       // RENDER THE TOTAL TOURIST LABEL
       this.$('#tourist-year-map-label').html(year);
-      this.$('#tourist-total-map-label').html(totalf);
+      this.$('#tourist-total-map-label').html(this.format(total));
 
       // PREPARE THE DATA
-      var data   = [];
+      var data = [];
       for(var i = 1; i <= 32; i++){
         var models = collection.where({categoria_id : this.map_type, estado_id : i});
         data.push({
@@ -95,36 +103,57 @@ define(function(require){
       var states = d3.select('#Mexico')
         .selectAll('path')
         .attr('style', function(){
-        	// agrega d3.scale
-        	var colorScale = d3.scale.linear()
-				.range(['#7ec8f2', '#bc1d78']) 
-				.domain([750000, 8000000]);
-			var colorScale250 = d3.scale.linear()
-				.range(['#cff3ff', '#7ec8f2']) 
-				.domain([1, 750000]);
-			//	
-			var id    = this.getAttribute('id'),
-				total = d3.sum(data[id - 1].total),
-				// agrega colorScale
-				fill  = colorScale(total);
-				 
-				// agrego un if para el 0
-				if(total == 0){
- 	                fill = "#f2f2f2";
- 				}
-				// agrego un else if para la escala de colores menor a 750 mil
-				else if(total < 750000){
- 	                fill = colorScale250(total);
- 				}
-				// agrego un else if para la escala mayor a 8 millones
- 				else if(total > 8000000) {
-	 				fill = "#990066";
- 				}
-							             
-			return 'fill: ' + fill + '; cursor: pointer';
+          var id = this.getAttribute('id'),
+				  total  = d3.sum(data[id - 1].total),
+          fill   = '';
+
+          if(total > 8000000) {
+            fill = "#990066";
+          }
+          else if(total > 750000){
+            fill = colorScale(total);
+          }
+          else if(total > 0){
+            fill = colorScale250(total);
+          }
+          else{
+            fill = "#f2f2f2";
+          }
+
+          return 'fill: ' + fill + '; cursor: pointer';
+        })
+
+        // SHOW THE STATE LABEL ON MOUSEOVER
+        .on('mouseover', function(){
+          var bb = this.getBBox(),
+              id = this.getAttribute('id'),
+              d  = data[id - 1],
+              t  = d3.sum(d.total),
+              y  = bb.y + (bb.height/2)
+              x  = bb.x + (bb.width/2);
+              // ese huguillo, nomás falta ajustar que la etiqueta 
+              // no se corte en los estados más a la derecha (no me
+              // refiero a los que gobierna el PAN, sino a la derecha
+              // del mapa jajaja).
+              // ahí yo creo que se soluciona con una función para calcular X
+              // algo estilo:
+              //
+              // x = function(){
+              //   if(no tan a la derecha)
+              //     return bb.x + (bb.width/2);
+              //   else
+              //     return algún master trick con un valor menos a la derecha
+              // }
+
+          // remove the previous labels
+          d3.selectAll('#Mexico text').remove();
+
+          d3.select('#Mexico')
+            .append("text")
+              .text(d.name + ': ' + that.format(t))
+              .attr('x', x)
+              .attr('y', y;
         });
-
-
     },
 
 
